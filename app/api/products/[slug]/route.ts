@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     await dbConnect();
-    const { slug } = await params;
+    const { slug } = params;
     const productDetails = await Product.findOne({ slug });
     if (!productDetails) {
       return NextResponse.json(
@@ -30,7 +30,7 @@ export async function PUT(
   try {
     await dbConnect();
 
-    const { slug } = await params;
+    const { slug } = params;
 
     const body = await req.json();
     const updatedProduct = await Product.findByIdAndUpdate(slug, body, {
