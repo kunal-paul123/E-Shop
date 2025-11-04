@@ -6,6 +6,16 @@
 
 ---
 
+# Routes:
+
+admin route: /admin
+
+---
+
+dashboard route: /dashboard
+
+---
+
 ## 🧩 Tech Stack
 
 | Layer | Technology |
