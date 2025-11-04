@@ -12,7 +12,7 @@ interface Product {
 }
 
 async function getProducts(): Promise<Product[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`, {
+  const res = await fetch("/api/products", {
     next: { revalidate: 60 },
   });
 
