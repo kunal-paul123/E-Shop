@@ -22,7 +22,7 @@
 ### 1️⃣ Clone the repository
 
 ```bash
-https://github.com/kunal-paul123/E-shop.git
+https://github.com/kunal-paul123/E-Shop.git
 
 ```
 ### 2️⃣ Install dependencies
