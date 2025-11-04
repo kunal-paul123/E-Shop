@@ -4,11 +4,11 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await dbConnect();
-    const { slug } = params;
+    const { slug } = await params;
     const productDetails = await Product.findOne({ slug });
     if (!productDetails) {
       return NextResponse.json(
@@ -25,12 +25,12 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await dbConnect();
 
-    const { slug } = params;
+    const { slug } = await params;
 
     const body = await req.json();
     const updatedProduct = await Product.findByIdAndUpdate(slug, body, {
