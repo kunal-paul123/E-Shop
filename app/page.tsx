@@ -1,4 +1,6 @@
 import ProductList from "@/components/ProductList";
+import dbConnect from "@/lib/connectDb";
+import Product from "@/models/product";
 
 interface Product {
   _id: string;
@@ -11,14 +13,19 @@ interface Product {
   inventory: number;
 }
 
-async function getProducts(): Promise<Product[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const res = await fetch(`${baseUrl}/api/products`, {
-    next: { revalidate: 60 },
-  });
+export const dynamic = "force-static";
+export const revalidate = 3600;
 
-  if (!res.ok) throw new Error("Failed to fetch products");
-  return res.json();
+async function getProducts(): Promise<Product[]> {
+  try {
+    await dbConnect();
+    const products = await Product.find({}).lean();
+
+    return JSON.parse(JSON.stringify(products));
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+    return [];
+  }
 }
 
 const Home = async () => {
