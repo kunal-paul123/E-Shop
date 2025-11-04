@@ -2,7 +2,7 @@ import React from "react";
 import dbConnect from "@/lib/connectDb";
 
 import Link from "next/link";
-import Product from "@/app/models/product";
+import Product from "@/models/product";
 import Image from "next/image";
 
 export default async function DashboardPage() {
