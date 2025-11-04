@@ -14,7 +14,8 @@ interface Product {
 }
 
 async function getProductDetails(slug: string): Promise<Product | null> {
-  const res = await fetch(`/api/products/${slug}`, {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const res = await fetch(`${baseUrl}/api/products/${slug}`, {
     next: { revalidate: 60 },
   });
 
