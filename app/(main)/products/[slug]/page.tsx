@@ -1,6 +1,4 @@
 import Breadcrumb from "@/components/Breadcrumb";
-import dbConnect from "@/lib/connectDb";
-import Product from "@/models/product";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -15,37 +13,14 @@ interface Product {
   inventory: number;
 }
 
-// Generate static params at build time
-export async function generateStaticParams() {
-  try {
-    await dbConnect();
-    const products = await Product.find({}).select("slug").lean();
-
-    return products.map((product) => ({
-      slug: product.slug,
-    }));
-  } catch (error) {
-    console.error("Failed to generate static params:", error);
-    return [];
-  }
-}
-
-// Force static generation
-export const dynamic = "force-static";
-export const revalidate = 3600; // Revalidate every hour
-
 async function getProductDetails(slug: string): Promise<Product | null> {
-  try {
-    await dbConnect();
-    const product = await Product.findOne({ slug }).lean();
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const res = await fetch(`${baseUrl}/api/products/${slug}`, {
+    next: { revalidate: 60 },
+  });
 
-    if (!product) return null;
-
-    return JSON.parse(JSON.stringify(product));
-  } catch (error) {
-    console.error("Failed to fetch product:", error);
-    return null;
-  }
+  if (!res.ok) return null;
+  return res.json();
 }
 
 const ProductDetails = async ({
